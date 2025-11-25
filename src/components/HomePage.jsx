@@ -5,10 +5,10 @@ function HomePage({ onStart }) {
     <div className="home-container">
       <div className="home-content">
         <h1 className="home-title">🏔️ Mountain Games</h1>
-        <p className="home-subtitle">Le Défi de Tom</p>
+        <p className="home-subtitle"></p>
         <div className="home-description">
           <p>Bienvenue dans ton aventure montagne !</p>
-          <p>Relève 3 défis progressifs pour débloquer ta carte cadeau :</p>
+          <p>Relève 3 défis progressifs pour débloquer une surprise :</p>
           <ul className="challenges-list">
             <li>🧠 Quiz Montagne (Facile)</li>
             <li>🧩 Puzzle des Sommets (Moyen)</li>
