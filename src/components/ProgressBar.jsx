@@ -3,7 +3,7 @@ import './ProgressBar.css'
 function ProgressBar({ progress }) {
   const steps = [
     { name: 'Quiz', completed: progress.quiz, icon: '🧠' },
-    { name: 'Puzzle', completed: progress.puzzle, icon: '🧩' },
+    { name: 'Réflexes', completed: progress.puzzle, icon: '🎯' },
     { name: 'Runner', completed: progress.runner, icon: '🏃' }
   ]
 

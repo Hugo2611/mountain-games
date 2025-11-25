@@ -11,7 +11,7 @@ function HomePage({ onStart }) {
           <p>Relève 3 défis progressifs pour débloquer une surprise :</p>
           <ul className="challenges-list">
             <li>🧠 Quiz Montagne (Facile)</li>
-            <li>🧩 Puzzle des Sommets (Moyen)</li>
+            <li>🎯 Jeu de Réflexes (Moyen)</li>
             <li>🏃 Runner du Trail (Difficile)</li>
           </ul>
         </div>
