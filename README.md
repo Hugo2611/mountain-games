@@ -5,8 +5,8 @@ Un site web React avec 3 mini-jeux progressifs qui débloquent une carte cadeau.
 ## 🎮 Les Jeux
 
 1. **Quiz Montagne** (Facile) - 5 questions sur le ski, trail et montagne
-2. **Puzzle des Sommets** (Moyen) - Puzzle 3x3 à résoudre
-3. **Runner du Trail** (Difficile) - Survie pendant 20 secondes
+2. **Jeu de Réflexes** (Moyen) - Cliquer sur 15 cibles en 30 secondes
+3. **Descente de Ski** (Difficile) - Éviter les obstacles pendant 25 secondes
 
 ## 🚀 Installation locale
 
@@ -96,9 +96,5 @@ mountain-games/
 ## 🎯 Objectifs des jeux
 
 - **Quiz** : Répondre correctement à 3/5 questions
-- **Puzzle** : Remettre les cases dans le bon ordre
-- **Runner** : Survivre 20 secondes sans collision
-
-## 👤 Auteur
-
-Créé pour Tom - Mountain Adventure 2025 🏔️
+- **Réflexes** : Cliquer sur 15 cibles en moins de 30 secondes
+- **Ski** : Descendre la piste pendant 25 secondes en évitant les obstacles

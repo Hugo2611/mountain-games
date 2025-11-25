@@ -3,21 +3,20 @@ import './RunnerGame.css'
 
 function RunnerGame({ onComplete }) {
   const [gameState, setGameState] = useState('ready') // ready, playing, won, lost
-  const [playerY, setPlayerY] = useState(250) // Position verticale du joueur
-  const [isJumping, setIsJumping] = useState(false)
+  const [playerX, setPlayerX] = useState(1) // Position horizontale (0=gauche, 1=centre, 2=droite)
   const [obstacles, setObstacles] = useState([])
   const [timer, setTimer] = useState(0)
   const [score, setScore] = useState(0)
+  const [distance, setDistance] = useState(0)
   const gameLoopRef = useRef(null)
   const obstacleIntervalRef = useRef(null)
 
-  const GROUND_Y = 250
-  const JUMP_HEIGHT = 120
-  const PLAYER_SIZE = 40
-  const OBSTACLE_WIDTH = 30
-  const OBSTACLE_HEIGHT = 40
-  const GAME_WIDTH = 700
-  const WIN_TIME = 20 // 20 secondes pour gagner
+  const LANES = 3 // 3 pistes (gauche, centre, droite)
+  const PLAYER_SIZE = 50
+  const OBSTACLE_SIZE = 50
+  const GAME_HEIGHT = 400
+  const WIN_TIME = 25 // 25 secondes pour gagner
+  const WIN_DISTANCE = 500 // Distance à parcourir
 
   useEffect(() => {
     if (gameState === 'playing') {
@@ -29,24 +28,28 @@ function RunnerGame({ onComplete }) {
     return () => stopGame()
   }, [gameState])
 
-  // Gestion du saut avec clavier
+  // Gestion des déplacements gauche-droite
   useEffect(() => {
     const handleKeyPress = (e) => {
-      if (e.code === 'Space' && gameState === 'playing') {
-        jump()
+      if (gameState !== 'playing') return
+
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A' || e.key === 'q' || e.key === 'Q') {
+        moveLeft()
+      } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+        moveRight()
       }
     }
 
     window.addEventListener('keydown', handleKeyPress)
     return () => window.removeEventListener('keydown', handleKeyPress)
-  }, [gameState, isJumping])
+  }, [gameState, playerX])
 
   const startGame = () => {
     setTimer(0)
     setScore(0)
+    setDistance(0)
     setObstacles([])
-    setPlayerY(GROUND_Y)
-    setIsJumping(false)
+    setPlayerX(1) // Commence au centre
 
     // Boucle principale du jeu
     gameLoopRef.current = setInterval(() => {
@@ -58,11 +61,19 @@ function RunnerGame({ onComplete }) {
         return newTime
       })
 
-      // Déplacer les obstacles
+      setDistance(prev => {
+        const newDist = prev + 2
+        if (newDist >= WIN_DISTANCE) {
+          setGameState('won')
+        }
+        return newDist
+      })
+
+      // Déplacer les obstacles vers le bas (effet de descente)
       setObstacles(prev => {
         const updated = prev
-          .map(obs => ({ ...obs, x: obs.x - 5 }))
-          .filter(obs => obs.x > -OBSTACLE_WIDTH)
+          .map(obs => ({ ...obs, y: obs.y + 5 }))
+          .filter(obs => obs.y < GAME_HEIGHT + 50)
         
         return updated
       })
@@ -70,14 +81,15 @@ function RunnerGame({ onComplete }) {
       setScore(prev => prev + 1)
     }, 50)
 
-    // Créer des obstacles
+    // Créer des obstacles aléatoires
     obstacleIntervalRef.current = setInterval(() => {
+      const randomLane = Math.floor(Math.random() * LANES)
       setObstacles(prev => [...prev, {
-        x: GAME_WIDTH,
-        y: GROUND_Y,
+        lane: randomLane,
+        y: -50,
         id: Date.now()
       }])
-    }, 2000)
+    }, 1500)
   }
 
   const stopGame = () => {
@@ -91,54 +103,31 @@ function RunnerGame({ onComplete }) {
     }
   }
 
-  const jump = () => {
-    if (isJumping) return
+  const moveLeft = () => {
+    setPlayerX(prev => Math.max(0, prev - 1))
+  }
 
-    setIsJumping(true)
-    
-    // Animation de saut
-    let jumpY = GROUND_Y
-    let velocity = -15
-    const gravity = 1
-
-    const jumpInterval = setInterval(() => {
-      velocity += gravity
-      jumpY += velocity
-
-      if (jumpY >= GROUND_Y) {
-        jumpY = GROUND_Y
-        setPlayerY(GROUND_Y)
-        setIsJumping(false)
-        clearInterval(jumpInterval)
-      } else {
-        setPlayerY(jumpY)
-      }
-    }, 20)
+  const moveRight = () => {
+    setPlayerX(prev => Math.min(LANES - 1, prev + 1))
   }
 
   // Détection de collision
   useEffect(() => {
     if (gameState !== 'playing') return
 
-    const playerX = 50
-    const playerBottom = playerY + PLAYER_SIZE
+    const playerBottom = GAME_HEIGHT - 80 // Position du joueur
 
     for (let obstacle of obstacles) {
-      const obsRight = obstacle.x + OBSTACLE_WIDTH
-      const obsLeft = obstacle.x
-      const obsTop = obstacle.y
-
-      // Vérifier collision
-      if (
-        playerX + PLAYER_SIZE > obsLeft &&
-        playerX < obsRight &&
-        playerBottom > obsTop
-      ) {
-        setGameState('lost')
-        break
+      // Vérifier si l'obstacle est à la hauteur du joueur
+      if (obstacle.y >= playerBottom - 30 && obstacle.y <= playerBottom + 30) {
+        // Vérifier si dans la même lane
+        if (obstacle.lane === playerX) {
+          setGameState('lost')
+          break
+        }
       }
     }
-  }, [obstacles, playerY, gameState])
+  }, [obstacles, playerX, gameState])
 
   const handleStart = () => {
     setGameState('playing')
@@ -152,21 +141,22 @@ function RunnerGame({ onComplete }) {
     return (
       <div className="container">
         <div className="game-container">
-          <h2 className="game-title">Runner du Trail 🏃</h2>
-          <p className="game-subtitle">Survie pendant 20 secondes !</p>
+          <h2 className="game-title">Descente de Ski ⛷️</h2>
+          <p className="game-subtitle">Dévale la pente et évite les obstacles !</p>
           
           <div className="runner-instructions">
             <h3>Instructions :</h3>
             <ul>
-              <li>🏃 Le coureur avance automatiquement</li>
-              <li>⬆️ Appuie sur <kbd>ESPACE</kbd> ou clique pour sauter</li>
-              <li>🚧 Évite les obstacles pendant 20 secondes</li>
-              <li>⏱️ Survie à tout le parcours pour gagner !</li>
+              <li>⛷️ Tu descends automatiquement la piste</li>
+              <li>⬅️ Flèche GAUCHE ou A/Q pour aller à gauche</li>
+              <li>➡️ Flèche DROITE ou D pour aller à droite</li>
+              <li>🌲 Évite les arbres et obstacles</li>
+              <li>🏁 Survie pendant {WIN_TIME} secondes pour gagner !</li>
             </ul>
           </div>
 
           <button className="btn-primary" onClick={handleStart}>
-            Démarrer le Trail 🏃
+            Démarrer la Descente ⛷️
           </button>
         </div>
       </div>
@@ -177,11 +167,11 @@ function RunnerGame({ onComplete }) {
     return (
       <div className="container">
         <div className="game-container">
-          <h2 className="game-title">Trail Complété ! 🏃</h2>
+          <h2 className="game-title">Descente Réussie ! ⛷️</h2>
           <div className="runner-result">
             <div className="success-icon">🎉</div>
             <p className="result-message">
-              Incroyable ! Tu as survécu {timer.toFixed(1)} secondes !
+              Incroyable ! Tu as dévalé la piste avec succès !
             </p>
             <div className="stats">
               <div className="stat-item">
@@ -189,8 +179,8 @@ function RunnerGame({ onComplete }) {
                 <span className="stat-value">{timer.toFixed(1)}s</span>
               </div>
               <div className="stat-item">
-                <span className="stat-label">Score :</span>
-                <span className="stat-value">{score}</span>
+                <span className="stat-label">Distance :</span>
+                <span className="stat-value">{distance}m</span>
               </div>
             </div>
             <button className="btn-success" onClick={onComplete}>
@@ -206,13 +196,13 @@ function RunnerGame({ onComplete }) {
     return (
       <div className="container">
         <div className="game-container">
-          <h2 className="game-title">Game Over 💥</h2>
+          <h2 className="game-title">Chute ! 💥</h2>
           <div className="runner-result">
             <div className="fail-icon">❌</div>
             <p className="result-message">
-              Tu as percuté un obstacle ! Temps survécu : {timer.toFixed(1)}s
+              Tu as percuté un obstacle ! Distance : {distance}m
             </p>
-            <p className="retry-hint">Il fallait tenir 20 secondes...</p>
+            <p className="retry-hint">Il fallait tenir {WIN_TIME} secondes...</p>
             <button className="btn-primary" onClick={handleRestart}>
               Réessayer 🔄
             </button>
@@ -222,10 +212,12 @@ function RunnerGame({ onComplete }) {
     )
   }
 
+  const lanePositions = [16.6, 50, 83.4] // Positions en % pour 3 pistes
+
   return (
     <div className="container">
       <div className="game-container">
-        <h2 className="game-title">Runner du Trail 🏃</h2>
+        <h2 className="game-title">Descente de Ski ⛷️</h2>
         
         <div className="runner-hud">
           <div className="hud-item">
@@ -233,8 +225,8 @@ function RunnerGame({ onComplete }) {
             <span className="hud-value">{timer.toFixed(1)}s / {WIN_TIME}s</span>
           </div>
           <div className="hud-item">
-            <span className="hud-label">📊 Score :</span>
-            <span className="hud-value">{score}</span>
+            <span className="hud-label">📏 Distance :</span>
+            <span className="hud-value">{distance}m</span>
           </div>
         </div>
 
@@ -245,36 +237,46 @@ function RunnerGame({ onComplete }) {
           />
         </div>
 
-        <div className="game-canvas" onClick={jump}>
-          {/* Sol */}
-          <div className="ground" />
+        <div className="ski-canvas">
+          {/* Pistes */}
+          <div className="ski-lane" style={{ left: '16.6%' }} />
+          <div className="ski-lane" style={{ left: '50%' }} />
+          <div className="ski-lane" style={{ left: '83.4%' }} />
           
-          {/* Joueur */}
+          {/* Joueur (skieur) */}
           <div
-            className="player"
+            className="ski-player"
             style={{
-              left: '50px',
-              bottom: `${300 - playerY - PLAYER_SIZE}px`
+              left: `${lanePositions[playerX]}%`,
+              bottom: '80px'
             }}
           >
-            🏃
+            ⛷️
           </div>
 
           {/* Obstacles */}
           {obstacles.map(obstacle => (
             <div
               key={obstacle.id}
-              className="obstacle"
+              className="ski-obstacle"
               style={{
-                left: `${obstacle.x}px`,
-                bottom: '0px'
+                left: `${lanePositions[obstacle.lane]}%`,
+                top: `${obstacle.y}px`
               }}
-            />
+            >
+              🌲
+            </div>
           ))}
         </div>
 
+        <div className="ski-controls">
+          <button className="btn-control" onClick={moveLeft}>⬅️</button>
+          <span className="control-hint">Utilise les flèches ou A/D</span>
+          <button className="btn-control" onClick={moveRight}>➡️</button>
+        </div>
+
         <p className="runner-hint">
-          💡 Appuie sur <kbd>ESPACE</kbd> ou clique pour sauter
+          💡 Utilise les <kbd>←</kbd> <kbd>→</kbd> ou <kbd>A</kbd> <kbd>D</kbd> pour te déplacer
         </p>
       </div>
     </div>

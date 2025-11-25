@@ -119,7 +119,7 @@ function PuzzleGame({ onComplete }) {
               </div>
             </div>
             <button className="btn-success" onClick={onComplete}>
-              Passer au Runner 🏃
+              Passer au Ski ⛷️
             </button>
           </div>
         </div>

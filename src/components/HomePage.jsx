@@ -12,7 +12,7 @@ function HomePage({ onStart }) {
           <ul className="challenges-list">
             <li>🧠 Quiz Montagne (Facile)</li>
             <li>🎯 Jeu de Réflexes (Moyen)</li>
-            <li>🏃 Runner du Trail (Difficile)</li>
+            <li>⛷️ Descente de Ski (Difficile)</li>
           </ul>
         </div>
         <button className="btn-primary" onClick={onStart}>
