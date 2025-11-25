@@ -21,7 +21,6 @@ function GiftCard({ onReset }) {
         <div className="personal-message">
           <h2>🎁 Ta récompense : 50€ 🎁</h2>
           <p className="message-text">
-            Je te donnerai l'argent personnellement !<br/>
             Bravo pour avoir relevé ces défis experts ! 🏔️
           </p>
         </div>
