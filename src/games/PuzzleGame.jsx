@@ -11,8 +11,8 @@ function PuzzleGame({ onComplete }) {
   const timerRef = useRef(null)
 
   const TARGETS_TO_WIN = 20
-  const MAX_MISSED = 7
-  const GAME_TIME = 35
+  const MAX_MISSED = 3
+  const GAME_TIME = 20
 
   useEffect(() => {
     if (gameState === 'playing') {
@@ -42,10 +42,12 @@ function PuzzleGame({ onComplete }) {
   }
 
   const generateNewTarget = () => {
-    const x = Math.random() * 75 + 10 // 10-85%
-    const y = Math.random() * 75 + 10
-    const emoji = ['🎯', '⭐', '💎', '🏔️', '❄️'][Math.floor(Math.random() * 5)]
-    setTarget({ x, y, id: Date.now(), emoji })
+    const x = Math.random() * 70 + 15 // 15-85%
+    const y = Math.random() * 70 + 15
+    const emojis = ['🎯', '⭐', '💎', '🏔️', '❄️', '⛰️', '🔷', '🔶', '🔺', '⚡']
+    const emoji = emojis[Math.floor(Math.random() * emojis.length)]
+    const size = 40 + Math.random() * 20 // Taille variable 40-60px
+    setTarget({ x, y, id: Date.now(), emoji, size })
   }
 
   const handleTargetClick = (e) => {
@@ -84,12 +86,13 @@ function PuzzleGame({ onComplete }) {
             <h3>Instructions :</h3>
             <ul>
               <li>🎯 Clique rapidement sur les cibles qui apparaissent</li>
-              <li>⏱️ Tu as {GAME_TIME} secondes pour jouer</li>
+              <li>⏱️ Seulement {GAME_TIME} secondes pour tout finir !</li>
               <li>🎖️ Objectif : Toucher {TARGETS_TO_WIN} cibles</li>
-              <li>❌ Attention : Maximum {MAX_MISSED} clics ratés autorisés</li>
-              <li>⚡ Plus tu es rapide, plus ton score sera élevé !</li>
+              <li>❌ DIFFICILE : Maximum {MAX_MISSED} erreurs seulement !</li>
+              <li>📏 Les cibles ont des tailles variables</li>
+              <li>⚡ Sois ultra-précis et rapide !</li>
             </ul>
-            <p className="warning">⚠️ Clique uniquement sur les cibles, pas à côté !</p>
+            <p className="warning">⚠️ Niveau expert : 20 cibles en 20 secondes avec 3 erreurs max !</p>
           </div>
 
           <button className="btn-primary" onClick={() => setGameState('playing')}>
@@ -187,7 +190,8 @@ function PuzzleGame({ onComplete }) {
             className="reflex-target"
             style={{
               left: `${target.x}%`,
-              top: `${target.y}%`
+              top: `${target.y}%`,
+              fontSize: `${target.size || 60}px`
             }}
             onClick={handleTargetClick}
           >

@@ -18,7 +18,7 @@ function RunnerGame({ onComplete }) {
     { id: 3, name: 'Jaune', color: '#eab308', emoji: '🟡' }
   ]
 
-  const WIN_LEVEL = 8 // Atteindre le niveau 8 pour gagner
+  const WIN_LEVEL = 5 // Atteindre le niveau 5 pour gagner
 
   useEffect(() => {
     if (gameState === 'playing' && currentLevel === 1 && sequence.length === 0) {
@@ -39,8 +39,9 @@ function RunnerGame({ onComplete }) {
     setPlayerSequence([])
     setIsShowingSequence(true)
     
-    // Ajouter un nouveau bouton à la séquence
-    const newSequence = [...sequence, Math.floor(Math.random() * 4)]
+    // NOUVELLE SÉQUENCE COMPLÈTE à chaque niveau (plus difficile)
+    const sequenceLength = currentLevel + 2 // Niveau 1 = 3 couleurs, Niveau 5 = 7 couleurs
+    const newSequence = Array.from({ length: sequenceLength }, () => Math.floor(Math.random() * 4))
     setSequence(newSequence)
     
     // Montrer la séquence
@@ -48,6 +49,10 @@ function RunnerGame({ onComplete }) {
   }
 
   const playSequence = async (seq) => {
+    // Temps d'affichage réduit selon le niveau (plus difficile)
+    const displayTime = Math.max(250, 400 - (currentLevel * 20))
+    const pauseTime = Math.max(200, 500 - (currentLevel * 30))
+    
     for (let i = 0; i < seq.length; i++) {
       await new Promise(resolve => {
         timeoutRef.current = setTimeout(() => {
@@ -55,8 +60,8 @@ function RunnerGame({ onComplete }) {
           setTimeout(() => {
             setActiveButton(null)
             resolve()
-          }, 400)
-        }, 800)
+          }, displayTime)
+        }, pauseTime)
       })
     }
     setIsShowingSequence(false)
@@ -121,13 +126,14 @@ function RunnerGame({ onComplete }) {
           <div className="runner-instructions">
             <h3>Instructions :</h3>
             <ul>
-              <li>🎵 Regarde bien la séquence de couleurs</li>
-              <li>🧠 Mémorise l'ordre des boutons qui s'allument</li>
-              <li>👆 Répète la séquence en cliquant sur les boutons</li>
-              <li>📈 Chaque niveau ajoute une couleur</li>
+              <li>🎵 La séquence change COMPLÈTEMENT à chaque niveau</li>
+              <li>🧠 Mémorise rapidement : elle s'affiche de plus en plus vite</li>
+              <li>👆 Répète exactement la séquence montrée</li>
+              <li>📈 5 niveaux avec séquences totalement différentes</li>
+              <li>⚡ Plus tu avances, plus c'est rapide et complexe</li>
               <li>🏆 Atteins le niveau {WIN_LEVEL} pour gagner !</li>
             </ul>
-            <p className="mobile-friendly">✨ Parfait pour jouer sur mobile !</p>
+            <p className="mobile-friendly">✨ Mode Expert : Séquences aléatoires et vitesse croissante !</p>
           </div>
 
           <button className="btn-primary" onClick={handleStart}>

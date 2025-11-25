@@ -43,62 +43,43 @@
 }
 
 .gift-card-display {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 20px;
-  padding: 40px;
   margin: 30px 0;
-  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   animation: glow 2s infinite;
 }
 
 @keyframes glow {
-  0%, 100% { box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3); }
-  50% { box-shadow: 0 10px 40px rgba(102, 126, 234, 0.6); }
+  0%, 100% { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); }
+  50% { box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); }
 }
 
-.card-inner {
-  background: white;
-  border-radius: 15px;
-  padding: 30px;
+.gift-card-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 20px;
 }
 
-.card-inner h2 {
-  color: #667eea;
-  font-size: 1.8rem;
-  margin-bottom: 15px;
-}
-
-.card-amount {
-  font-size: 4rem;
-  font-weight: bold;
+.personal-message {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin: 20px 0;
+  border-radius: 20px;
+  padding: 30px;
+  margin: 30px 0;
+  color: white;
 }
 
-.card-description {
-  color: #666;
-  font-size: 1.1rem;
-  margin: 15px 0;
-}
-
-.card-code {
-  background: #f0f0f0;
-  padding: 15px;
-  border-radius: 10px;
-  font-family: 'Courier New', monospace;
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: #667eea;
-  margin: 20px 0;
-  letter-spacing: 2px;
-}
-
-.mountain-icon {
+.personal-message h2 {
   font-size: 2rem;
-  margin-top: 15px;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.message-text {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  font-weight: 500;
 }
 
 .gift-actions {
