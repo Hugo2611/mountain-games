@@ -4,7 +4,7 @@ function ProgressBar({ progress }) {
   const steps = [
     { name: 'Quiz', completed: progress.quiz, icon: '🧠' },
     { name: 'Réflexes', completed: progress.puzzle, icon: '🎯' },
-    { name: 'Ski', completed: progress.runner, icon: '⛷️' }
+    { name: 'Simon', completed: progress.runner, icon: '🎵' }
   ]
 
   return (

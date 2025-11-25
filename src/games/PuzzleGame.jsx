@@ -10,9 +10,9 @@ function PuzzleGame({ onComplete }) {
   const gameAreaRef = useRef(null)
   const timerRef = useRef(null)
 
-  const TARGETS_TO_WIN = 15
-  const MAX_MISSED = 5
-  const GAME_TIME = 30
+  const TARGETS_TO_WIN = 20
+  const MAX_MISSED = 7
+  const GAME_TIME = 35
 
   useEffect(() => {
     if (gameState === 'playing') {
@@ -42,9 +42,10 @@ function PuzzleGame({ onComplete }) {
   }
 
   const generateNewTarget = () => {
-    const x = Math.random() * 80 + 5 // 5-85%
-    const y = Math.random() * 80 + 5
-    setTarget({ x, y, id: Date.now() })
+    const x = Math.random() * 75 + 10 // 10-85%
+    const y = Math.random() * 75 + 10
+    const emoji = ['🎯', '⭐', '💎', '🏔️', '❄️'][Math.floor(Math.random() * 5)]
+    setTarget({ x, y, id: Date.now(), emoji })
   }
 
   const handleTargetClick = (e) => {
@@ -82,12 +83,13 @@ function PuzzleGame({ onComplete }) {
           <div className="reflex-instructions">
             <h3>Instructions :</h3>
             <ul>
-              <li>🎯 Clique sur les cibles qui apparaissent</li>
-              <li>⏱️ Tu as 30 secondes</li>
-              <li>🎖️ Objectif : {TARGETS_TO_WIN} cibles</li>
-              <li>❌ Maximum {MAX_MISSED} clics ratés</li>
+              <li>🎯 Clique rapidement sur les cibles qui apparaissent</li>
+              <li>⏱️ Tu as {GAME_TIME} secondes pour jouer</li>
+              <li>🎖️ Objectif : Toucher {TARGETS_TO_WIN} cibles</li>
+              <li>❌ Attention : Maximum {MAX_MISSED} clics ratés autorisés</li>
+              <li>⚡ Plus tu es rapide, plus ton score sera élevé !</li>
             </ul>
-            <p className="warning">⚠️ Ne clique pas à côté des cibles !</p>
+            <p className="warning">⚠️ Clique uniquement sur les cibles, pas à côté !</p>
           </div>
 
           <button className="btn-primary" onClick={() => setGameState('playing')}>
@@ -119,7 +121,7 @@ function PuzzleGame({ onComplete }) {
               </div>
             </div>
             <button className="btn-success" onClick={onComplete}>
-              Passer au Ski ⛷️
+              Passer au Simon 🎵
             </button>
           </div>
         </div>
@@ -189,13 +191,14 @@ function PuzzleGame({ onComplete }) {
             }}
             onClick={handleTargetClick}
           >
-            🎯
+            {target.emoji || '🎯'}
           </div>
         </div>
 
-        <p className="reflex-hint">
-          💡 Clique rapidement sur les cibles ! Évite de cliquer à côté !
-        </p>
+        <div className="reflex-tips">
+          <p>💡 <strong>Astuce :</strong> Clique uniquement sur les symboles ! Évite de cliquer dans le vide.</p>
+          <p>⚡ Chaque clic raté compte, sois précis !</p>
+        </div>
       </div>
     </div>
   )

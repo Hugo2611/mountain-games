@@ -32,6 +32,16 @@
   font-weight: bold;
 }
 
+.mobile-friendly {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
 .runner-hud {
   display: flex;
   justify-content: space-around;
@@ -70,94 +80,91 @@
   transition: width 0.1s linear;
 }
 
-.ski-canvas {
-  width: 100%;
-  max-width: 600px;
-  height: 400px;
-  background: linear-gradient(to bottom, #E8F4F8 0%, #D4E9F0 50%, #C0DEE8 100%);
-  border-radius: 15px;
+.sequence-status {
+  text-align: center;
+  font-size: 1.3rem;
+  padding: 15px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  margin: 20px 0;
+  color: #666;
+  font-weight: 600;
+}
+
+.sequence-status.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+.simon-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.simon-button {
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
   position: relative;
   overflow: hidden;
-  margin: 20px auto;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  border: 3px solid #A0D0E0;
 }
 
-.ski-lane {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: rgba(255, 255, 255, 0.4);
-  transform: translateX(-50%);
-  animation: snowFall 1s linear infinite;
+.simon-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6 !important;
 }
 
-@keyframes snowFall {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 0 20px;
-  }
+.simon-button:not(:disabled):hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
 }
 
-.ski-player {
-  position: absolute;
+.simon-button:not(:disabled):active,
+.simon-button.active {
+  transform: scale(0.95);
+  opacity: 1 !important;
+  box-shadow: 0 0 30px currentColor, inset 0 0 20px rgba(255,255,255,0.5);
+}
+
+.simon-button.active {
+  animation: buttonFlash 0.4s ease;
+}
+
+@keyframes buttonFlash {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.button-emoji {
   font-size: 3rem;
-  transform: translateX(-50%);
-  transition: left 0.2s ease;
-  z-index: 10;
-  animation: skiWobble 0.5s ease-in-out infinite;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
 }
 
-@keyframes skiWobble {
-  0%, 100% { transform: translateX(-50%) rotate(-2deg); }
-  50% { transform: translateX(-50%) rotate(2deg); }
-}
-
-.ski-obstacle {
-  position: absolute;
-  font-size: 2.5rem;
-  transform: translateX(-50%);
-  z-index: 5;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-}
-
-.ski-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  margin: 20px 0;
-}
-
-.btn-control {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+.button-name {
+  font-size: 1.2rem;
   color: white;
-  border: none;
-  padding: 15px 30px;
-  font-size: 2rem;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
-}
-
-.btn-control:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 15px rgba(102, 126, 234, 0.5);
-}
-
-.btn-control:active {
-  transform: scale(0.95);
-}
-
-.control-hint {
-  color: #666;
-  font-size: 0.9rem;
-  font-style: italic;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  font-weight: bold;
 }
 
 .runner-hint {
@@ -232,20 +239,25 @@
 }
 
 @media (max-width: 768px) {
-  .ski-canvas {
-    height: 350px;
+  .simon-grid {
+    gap: 15px;
+    padding: 15px;
+    max-width: 100%;
   }
 
-  .ski-player {
+  .simon-button {
+    border-radius: 15px;
+  }
+
+  .button-emoji {
     font-size: 2.5rem;
   }
 
-  .ski-obstacle {
-    font-size: 2rem;
+  .button-name {
+    font-size: 1rem;
   }
 
-  .btn-control {
-    padding: 12px 25px;
-    font-size: 1.8rem;
+  .runner-hud {
+    font-size: 0.9rem;
   }
 }

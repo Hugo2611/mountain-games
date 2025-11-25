@@ -10,9 +10,9 @@ function HomePage({ onStart }) {
           <p>Bienvenue dans ton aventure montagne !</p>
           <p>Relève 3 défis progressifs pour débloquer une surprise :</p>
           <ul className="challenges-list">
-            <li>🧠 Quiz Montagne (Facile)</li>
-            <li>🎯 Jeu de Réflexes (Moyen)</li>
-            <li>⛷️ Descente de Ski (Difficile)</li>
+            <li>🧠 Quiz Montagne (Facile) - 8 questions</li>
+            <li>🎯 Jeu de Réflexes (Moyen) - Précision</li>
+            <li>🎵 Simon de la Montagne (Difficile) - Mémoire</li>
           </ul>
         </div>
         <button className="btn-primary" onClick={onStart}>
