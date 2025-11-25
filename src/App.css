@@ -1,0 +1,65 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  width: 100%;
+}
+
+.game-container {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  margin: 20px auto;
+  max-width: 800px;
+}
+
+.game-title {
+  color: #667eea;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.game-subtitle {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 15px 40px;
+  font-size: 1.2rem;
+  border-radius: 50px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+  background: white;
+  color: #667eea;
+  padding: 12px 30px;
+  font-size: 1rem;
+  border-radius: 50px;
+  border: 2px solid #667eea;
+  font-weight: 600;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+  color: white;
+  padding: 15px 40px;
+  font-size: 1.2rem;
+  border-radius: 50px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(86, 171, 47, 0.4);
+}

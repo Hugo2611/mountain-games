@@ -1,0 +1,123 @@
+.quiz-progress {
+  background: #f0f0f0;
+  padding: 10px 20px;
+  border-radius: 20px;
+  text-align: center;
+  font-weight: 600;
+  color: #667eea;
+  margin-bottom: 30px;
+}
+
+.question-card {
+  background: #f8f9fa;
+  padding: 30px;
+  border-radius: 15px;
+  margin-top: 20px;
+}
+
+.question-text {
+  font-size: 1.4rem;
+  color: #333;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+.option-button {
+  background: white;
+  color: #333;
+  padding: 20px;
+  font-size: 1.1rem;
+  border-radius: 12px;
+  border: 2px solid #ddd;
+  text-align: left;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.option-button:hover:not(:disabled) {
+  border-color: #667eea;
+  background: #f0f0ff;
+  transform: translateX(5px);
+}
+
+.option-button:disabled {
+  cursor: not-allowed;
+}
+
+.option-button.correct {
+  background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+  color: white;
+  border-color: #56ab2f;
+  animation: correctAnswer 0.5s ease;
+}
+
+.option-button.incorrect {
+  background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+  color: white;
+  border-color: #eb3349;
+  animation: shake 0.5s ease;
+}
+
+.option-button.show-correct {
+  background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+  color: white;
+  border-color: #56ab2f;
+}
+
+@keyframes correctAnswer {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+.quiz-result {
+  text-align: center;
+}
+
+.score-display {
+  margin: 30px 0;
+}
+
+.score-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 0 auto;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.result-message {
+  font-size: 1.5rem;
+  margin: 30px 0;
+  color: #555;
+}
+
+.success-icon {
+  font-size: 3rem;
+  display: inline-block;
+  animation: bounce 1s infinite;
+}
+
+.fail-icon {
+  font-size: 3rem;
+  display: inline-block;
+}
